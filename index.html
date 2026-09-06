@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convite de Casamento — Fernanda & Hebert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F6EFE3;
+    --paper: #FFFDF8;
+    --ink: #2B3A3E;
+    --ink-soft: #5F7A7E;
+    --ocean: #3F7C8A;
+    --ocean-dark: #2C5C68;
+    --coral: #E08B6E;
+    --sun: #F2C14E;
+    --line: #E3D9C4;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* ===== Cenário praiano de fundo (CSS + SVG, sem precisar de foto) ===== */
+  .beach-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(180deg, #FCEBD5 0%, #F8DFC4 28%, #F6EFE3 55%, #F6EFE3 100%);
+  }
+
+  .sun {
+    position: fixed;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #FFE8AE, var(--sun) 70%);
+    box-shadow: 0 0 60px rgba(242, 193, 78, 0.5);
+    z-index: -2;
+  }
+
+  .waves {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
+    line-height: 0;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(44, 92, 104, 0.08);
+  }
+
+  .wrap {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+    position: relative;
+  }
+
+  header.hero {
+    text-align: center;
+    padding: 90px 24px 40px;
+  }
+
+  .hero .kicker {
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ocean-dark);
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: clamp(46px, 9vw, 72px);
+    margin: 0 0 14px;
+    color: var(--ocean-dark);
+  }
+
+  .hero .date-place {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  .hero .date-place span {
+    display: block;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .divider-icon {
+    margin: 26px auto 0;
+    width: 40px;
+    color: var(--coral);
+  }
+
+  /* ===== Card de busca / RSVP ===== */
+  .rsvp-card {
+    padding: 40px 32px;
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .rsvp-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0 0 8px;
+    color: var(--ocean-dark);
+  }
+
+  .rsvp-card p.lead {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0 0 24px;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .search-row input {
+    flex: 1;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--sand);
+    color: var(--ink);
+  }
+
+  .search-row input:focus {
+    outline: none;
+    border-color: var(--ocean);
+  }
+
+  button {
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    border: none;
+    border-radius: 4px;
+    padding: 13px 22px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  button:hover { opacity: 0.9; }
+
+  .btn-ocean { background: var(--ocean); color: #fff; }
+  .btn-coral { background: var(--coral); color: #fff; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+
+  .match-list {
+    list-style: none;
+    padding: 0;
+    margin: 22px 0 0;
+    text-align: left;
+  }
+
+  .match-list li {
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: var(--sand);
+    font-size: 15px;
+    transition: background 0.15s ease;
+  }
+
+  .match-list li:hover { background: #EFE6D3; }
+
+  .feedback {
+    margin-top: 20px;
+    font-size: 14.5px;
+    padding: 14px 16px;
+    border-radius: 4px;
+  }
+
+  .feedback.warn {
+    background: #FBEDE6;
+    color: #A85A38;
+  }
+
+  .feedback.success {
+    background: #E7F1EE;
+    color: var(--ocean-dark);
+  }
+
+  .guest-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--coral);
+  }
+
+  .confirm-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 22px;
+  }
+
+  .status-note {
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  .status-note button {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: var(--ocean-dark);
+    padding: 0;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="beach-bg"></div>
+<div class="sun"></div>
+<div class="waves">
+  <svg viewBox="0 0 1440 180" preserveAspectRatio="none" width="100%" height="160" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,90 C240,150 480,30 720,80 C960,130 1200,40 1440,90 L1440,180 L0,180 Z" fill="#BFE0DE" opacity="0.6"/>
+    <path d="M0,120 C240,70 480,160 720,110 C960,60 1200,140 1440,110 L1440,180 L0,180 Z" fill="#8FC3C6" opacity="0.7"/>
+    <path d="M0,150 C240,110 480,170 720,140 C960,110 1200,170 1440,140 L1440,180 L0,180 Z" fill="#3F7C8A"/>
+  </svg>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Nosso casamento</div>
+    <h1>Fernanda &amp; Hebert</h1>
+    <p class="date-place">
+      31 de janeiro de 2027 — Di Ferraro, Interlagos
+      <span>Vila Velha/ES</span>
+    </p>
+    <p class="date-place">
+      <a href="https://maps.app.goo.gl/paF47U1qTQmS127B9" target="_blank" rel="noopener" style="color: var(--ocean-dark); font-family: 'Jost', sans-serif; font-size: 14px; text-decoration: underline;">📍 Ver localização no mapa</a>
+    </p>
+    <svg class="divider-icon" viewBox="0 0 40 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 14 Q10 4 20 14 T38 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </header>
+
+  <!-- ===== Etapa 1: buscar nome ===== -->
+  <div class="card rsvp-card" id="step-search">
+    <h2>Confirme sua presença</h2>
+    <p class="lead">Digite seu primeiro nome ou nome completo para encontrarmos o seu convite.</p>
+    <div class="search-row">
+      <input type="text" id="name-input" placeholder="Seu nome" autocomplete="off">
+      <button class="btn-ocean" id="search-btn">Buscar</button>
+    </div>
+    <ul class="match-list hidden" id="match-list"></ul>
+    <div class="feedback warn hidden" id="not-found-msg">
+      Não encontramos esse nome na lista de convidados. Confira a grafia e tente novamente, ou entre em contato com os noivos.
+    </div>
+  </div>
+
+  <!-- ===== Etapa 2: confirmar presença ===== -->
+  <div class="card rsvp-card hidden" id="step-confirm">
+    <h2>Olá, <span class="guest-name" id="guest-name-display"></span>!</h2>
+    <p class="lead" id="confirm-question">Você confirma sua presença no nosso casamento?</p>
+    <div class="confirm-buttons">
+      <button class="btn-ocean" id="btn-yes">Sim, estarei lá 💙</button>
+      <button class="btn-outline" id="btn-no">Não poderei ir</button>
+    </div>
+    <div class="feedback success hidden" id="already-answered"></div>
+    <div class="status-note">
+      <button id="back-to-search">Buscar outro nome</button>
+    </div>
+  </div>
+
+  <!-- ===== Etapa 3: obrigado ===== -->
+  <div class="card rsvp-card hidden" id="step-thanks">
+    <h2 id="thanks-title">Obrigado!</h2>
+    <p class="lead" id="thanks-msg">Sua resposta foi registrada.</p>
+    <div class="status-note">
+      <button id="thanks-change">Alterar resposta</button>
+    </div>
+  </div>
+
+  <footer>Com amor, Fernanda &amp; Hebert</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ====== CONFIGURAÇÃO DO SUPABASE ======
+  const SUPABASE_URL = "https://cqizfvzgivmthepfnngd.supabase.co/";
+  const SUPABASE_ANON_KEY = "sb_publishable_WSPIsu75q3v19VJtp4CrUQ_TPpoJVzS";
+  // ========================================
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const stepSearch = document.getElementById('step-search');
+  const stepConfirm = document.getElementById('step-confirm');
+  const stepThanks = document.getElementById('step-thanks');
+
+  const nameInput = document.getElementById('name-input');
+  const searchBtn = document.getElementById('search-btn');
+  const matchList = document.getElementById('match-list');
+  const notFoundMsg = document.getElementById('not-found-msg');
+
+  const guestNameDisplay = document.getElementById('guest-name-display');
+  const confirmQuestion = document.getElementById('confirm-question');
+  const alreadyAnswered = document.getElementById('already-answered');
+  const btnYes = document.getElementById('btn-yes');
+  const btnNo = document.getElementById('btn-no');
+  const backToSearch = document.getElementById('back-to-search');
+
+  const thanksTitle = document.getElementById('thanks-title');
+  const thanksMsg = document.getElementById('thanks-msg');
+  const thanksChange = document.getElementById('thanks-change');
+
+  let currentGuest = null;
+
+  function showStep(step) {
+    [stepSearch, stepConfirm, stepThanks].forEach(s => s.classList.add('hidden'));
+    step.classList.remove('hidden');
+  }
+
+  async function searchGuest() {
+    const termo = nameInput.value.trim();
+    matchList.innerHTML = '';
+    matchList.classList.add('hidden');
+    notFoundMsg.classList.add('hidden');
+
+    if (!termo) return;
+
+    const { data, error } = await supabaseClient
+      .from('convidados')
+      .select('id, nome, presenca')
+      .ilike('nome', '%' + termo + '%')
+      .limit(8);
+
+    if (error) {
+      alert('Não foi possível buscar agora. Tente novamente em instantes.');
+      console.error(error);
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      notFoundMsg.classList.remove('hidden');
+      return;
+    }
+
+    if (data.length === 1) {
+      openConfirm(data[0]);
+      return;
+    }
+
+    // Mais de um resultado: pede para escolher o nome certo
+    data.forEach(guest => {
+      const li = document.createElement('li');
+      li.textContent = guest.nome;
+      li.onclick = () => openConfirm(guest);
+      matchList.appendChild(li);
+    });
+    matchList.classList.remove('hidden');
+  }
+
+  function openConfirm(guest) {
+    currentGuest = guest;
+    guestNameDisplay.textContent = guest.nome;
+    alreadyAnswered.classList.add('hidden');
+
+    if (guest.presenca === true) {
+      confirmQuestion.textContent = 'Você já confirmou presença. Quer alterar sua resposta?';
+    } else if (guest.presenca === false) {
+      confirmQuestion.textContent = 'Você tinha avisado que não poderia vir. Quer alterar sua resposta?';
+    } else {
+      confirmQuestion.textContent = 'Você confirma sua presença no nosso casamento?';
+    }
+
+    showStep(stepConfirm);
+  }
+
+  async function responder(presenca) {
+    if (!currentGuest) return;
+
+    const { error } = await supabaseClient
+      .from('convidados')
+      .update({ presenca: presenca, respondido_em: new Date().toISOString() })
+      .eq('id', currentGuest.id);
+
+    if (error) {
+      alert('Não foi possível registrar sua resposta. Tente novamente.');
+      console.error(error);
+      return;
+    }
+
+    if (presenca) {
+      thanksTitle.textContent = 'Que alegria! 💙';
+      thanksMsg.textContent = 'Sua presença foi confirmada. Mal podemos esperar para celebrar com você!';
+    } else {
+      thanksTitle.textContent = 'Sentiremos sua falta';
+      thanksMsg.textContent = 'Obrigado por nos avisar! Ficará registrado que você não poderá comparecer.';
+    }
+
+    showStep(stepThanks);
+  }
+
+  searchBtn.addEventListener('click', searchGuest);
+  nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') searchGuest(); });
+  btnYes.addEventListener('click', () => responder(true));
+  btnNo.addEventListener('click', () => responder(false));
+  backToSearch.addEventListener('click', () => {
+    nameInput.value = '';
+    showStep(stepSearch);
+  });
+  thanksChange.addEventListener('click', () => showStep(stepConfirm));
+</script>
+
+</body>
+</html>
