@@ -293,7 +293,7 @@
   <!-- ===== Etapa 1: buscar nome ===== -->
   <div class="card rsvp-card" id="step-search">
     <h2>Confirme sua presença</h2>
-    <p class="lead">Digite seu PRIMEIRO NOME e caso apareça mais de um selecione abaixo.</p>
+    <p class="lead">Digite seu PRIMEIRO NOME e selecione abaixo.</p>
     <div class="search-row">
       <input type="text" id="name-input" placeholder="Seu nome" autocomplete="off">
       <button class="btn-ocean" id="search-btn">Buscar</button>
@@ -301,6 +301,9 @@
     <ul class="match-list hidden" id="match-list"></ul>
     <div class="feedback warn hidden" id="not-found-msg">
       Não encontramos esse nome na lista de convidados. Confira a grafia e tente novamente, ou entre em contato com os noivos.
+    </div>
+    <div class="feedback warn hidden" id="surname-joke">
+      Bebet não deixa você colocar sobrenome não! 😄 Digite só o primeiro nome, viu?
     </div>
   </div>
 
@@ -347,6 +350,7 @@
   const searchBtn = document.getElementById('search-btn');
   const matchList = document.getElementById('match-list');
   const notFoundMsg = document.getElementById('not-found-msg');
+  const surnameJoke = document.getElementById('surname-joke');
 
   const guestNameDisplay = document.getElementById('guest-name-display');
   const confirmQuestion = document.getElementById('confirm-question');
@@ -371,8 +375,14 @@
     matchList.innerHTML = '';
     matchList.classList.add('hidden');
     notFoundMsg.classList.add('hidden');
+    surnameJoke.classList.add('hidden');
 
     if (!termo) return;
+
+    if (termo.split(/\s+/).length > 1) {
+      surnameJoke.classList.remove('hidden');
+      return;
+    }
 
     const { data, error } = await supabaseClient
       .from('convidados')
@@ -391,12 +401,7 @@
       return;
     }
 
-    if (data.length === 1) {
-      openConfirm(data[0]);
-      return;
-    }
-
-    // Mais de um resultado: pede para escolher o nome certo
+    // Sempre mostra a lista para o convidado selecionar, mesmo com um único resultado
     data.forEach(guest => {
       const li = document.createElement('li');
       li.textContent = guest.nome;
