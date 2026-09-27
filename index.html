@@ -8,15 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sand: #F6EFE3;
-    --paper: #FFFDF8;
-    --ink: #2B3A3E;
-    --ink-soft: #5F7A7E;
-    --ocean: #3F7C8A;
-    --ocean-dark: #2C5C68;
-    --coral: #E08B6E;
-    --sun: #F2C14E;
-    --line: #E3D9C4;
+    --sand: #F4E9DE;
+    --paper: #FFFBF6;
+    --ink: #3D2A2E;
+    --ink-soft: #8C6E72;
+    --wine: #7A2E43;
+    --wine-dark: #5C2233;
+    --pink: #D98CA0;
+    --line: #E6D8CD;
   }
 
   * { box-sizing: border-box; }
@@ -31,41 +30,58 @@
     line-height: 1.6;
   }
 
-  .beach-bg {
+  /* ===== Fundo animado de fotos em colunas, descendo tipo carrossel ===== */
+  .photo-bg {
     position: fixed;
     inset: 0;
     z-index: -2;
-    background: linear-gradient(180deg, #FCEBD5 0%, #F8DFC4 28%, #F6EFE3 55%, #F6EFE3 100%);
+    display: flex;
+    gap: 4px;
+    overflow: hidden;
   }
 
-  .sun {
-    position: fixed;
-    top: 8%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #FFE8AE, var(--sun) 70%);
-    box-shadow: 0 0 60px rgba(242, 193, 78, 0.5);
-    z-index: -2;
+  .photo-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation-name: scrollDown;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
   }
 
-  .waves {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  .photo-col img {
     width: 100%;
+    height: auto;
+    display: block;
+    filter: sepia(18%) saturate(85%) brightness(0.92);
+  }
+
+  .photo-col.c1 { animation-duration: 46s; }
+  .photo-col.c2 { animation-duration: 58s; }
+  .photo-col.c3 { animation-duration: 40s; }
+  .photo-col.c4 { animation-duration: 62s; }
+  .photo-col.c5 { animation-duration: 50s; }
+
+  @keyframes scrollDown {
+    from { transform: translateY(-50%); }
+    to   { transform: translateY(0%); }
+  }
+
+  .bg-tint {
+    position: fixed;
+    inset: 0;
     z-index: -1;
-    line-height: 0;
+    background: linear-gradient(180deg, rgba(244,233,222,0.90) 0%, rgba(244,233,222,0.72) 35%, rgba(122,46,67,0.55) 100%);
   }
 
   .card {
-    background: var(--paper);
+    background: rgba(255, 251, 246, 0.92);
+    backdrop-filter: blur(3px);
     border: 1px solid var(--line);
     border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(44, 92, 104, 0.08);
+    box-shadow: 0 10px 30px rgba(92, 34, 51, 0.12);
   }
 
   .wrap {
@@ -85,7 +101,7 @@
     font-size: 14px;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--ocean-dark);
+    color: var(--wine-dark);
     margin-bottom: 18px;
   }
 
@@ -95,7 +111,8 @@
     font-style: italic;
     font-size: clamp(46px, 9vw, 72px);
     margin: 0 0 14px;
-    color: var(--ocean-dark);
+    color: var(--wine-dark);
+    text-shadow: 0 2px 18px rgba(255,255,255,0.6);
   }
 
   .hero .date-place {
@@ -115,7 +132,7 @@
   }
 
   .map-link {
-    color: var(--ocean-dark);
+    color: var(--wine-dark);
     font-family: 'Jost', sans-serif;
     font-size: 14px;
     text-decoration: underline;
@@ -124,7 +141,7 @@
   .divider-icon {
     margin: 26px auto 0;
     width: 40px;
-    color: var(--coral);
+    color: var(--pink);
   }
 
   .rsvp-card {
@@ -138,7 +155,7 @@
     font-weight: 600;
     font-size: 26px;
     margin: 0 0 8px;
-    color: var(--ocean-dark);
+    color: var(--wine-dark);
   }
 
   .rsvp-card p.lead {
@@ -165,7 +182,7 @@
 
   .search-row input:focus {
     outline: none;
-    border-color: var(--ocean);
+    border-color: var(--wine);
   }
 
   button {
@@ -182,8 +199,8 @@
 
   button:hover { opacity: 0.9; }
 
-  .btn-ocean { background: var(--ocean); color: #fff; }
-  .btn-coral { background: var(--coral); color: #fff; }
+  .btn-wine { background: var(--wine); color: #fff; }
+  .btn-pink { background: var(--pink); color: #fff; }
   .btn-outline {
     background: transparent;
     border: 1px solid var(--line);
@@ -208,7 +225,7 @@
     transition: background 0.15s ease;
   }
 
-  .match-list li:hover { background: #EFE6D3; }
+  .match-list li:hover { background: #EDDCCF; }
 
   .feedback {
     margin-top: 20px;
@@ -218,20 +235,20 @@
   }
 
   .feedback.warn {
-    background: #FBEDE6;
-    color: #A85A38;
+    background: #F6E4E8;
+    color: var(--wine-dark);
   }
 
   .feedback.success {
-    background: #E7F1EE;
-    color: var(--ocean-dark);
+    background: #F1E6E9;
+    color: var(--wine-dark);
   }
 
   .guest-name {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 24px;
-    color: var(--coral);
+    color: var(--pink);
   }
 
   .confirm-buttons {
@@ -251,7 +268,7 @@
     background: none;
     border: none;
     text-decoration: underline;
-    color: var(--ocean-dark);
+    color: var(--wine-dark);
     padding: 0;
     font-size: 13.5px;
     cursor: pointer;
@@ -269,15 +286,49 @@
 </head>
 <body>
 
-<div class="beach-bg"></div>
-<div class="sun"></div>
-<div class="waves">
-  <svg viewBox="0 0 1440 180" preserveAspectRatio="none" width="100%" height="160" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,90 C240,150 480,30 720,80 C960,130 1200,40 1440,90 L1440,180 L0,180 Z" fill="#BFE0DE" opacity="0.6"/>
-    <path d="M0,120 C240,70 480,160 720,110 C960,60 1200,140 1440,110 L1440,180 L0,180 Z" fill="#8FC3C6" opacity="0.7"/>
-    <path d="M0,150 C240,110 480,170 720,140 C960,110 1200,170 1440,140 L1440,180 L0,180 Z" fill="#3F7C8A"/>
-  </svg>
+<div class="photo-bg">
+  <div class="photo-col c1">
+    <img src="foto1.jpg" alt="">
+    <img src="foto4.jpg" alt="">
+    <img src="foto7.jpg" alt="">
+    <img src="foto1.jpg" alt="">
+    <img src="foto4.jpg" alt="">
+    <img src="foto7.jpg" alt="">
+  </div>
+  <div class="photo-col c2">
+    <img src="foto2.jpg" alt="">
+    <img src="foto5.jpg" alt="">
+    <img src="foto8.jpg" alt="">
+    <img src="foto2.jpg" alt="">
+    <img src="foto5.jpg" alt="">
+    <img src="foto8.jpg" alt="">
+  </div>
+  <div class="photo-col c3">
+    <img src="foto3.jpg" alt="">
+    <img src="foto6.jpg" alt="">
+    <img src="foto9.jpg" alt="">
+    <img src="foto3.jpg" alt="">
+    <img src="foto6.jpg" alt="">
+    <img src="foto9.jpg" alt="">
+  </div>
+  <div class="photo-col c4">
+    <img src="foto5.jpg" alt="">
+    <img src="foto1.jpg" alt="">
+    <img src="foto9.jpg" alt="">
+    <img src="foto5.jpg" alt="">
+    <img src="foto1.jpg" alt="">
+    <img src="foto9.jpg" alt="">
+  </div>
+  <div class="photo-col c5">
+    <img src="foto7.jpg" alt="">
+    <img src="foto2.jpg" alt="">
+    <img src="foto4.jpg" alt="">
+    <img src="foto7.jpg" alt="">
+    <img src="foto2.jpg" alt="">
+    <img src="foto4.jpg" alt="">
+  </div>
 </div>
+<div class="bg-tint"></div>
 
 <div class="wrap">
   <header class="hero">
@@ -301,7 +352,7 @@
     <p class="lead">Digite seu PRIMEIRO NOME e selecione abaixo.</p>
     <div class="search-row">
       <input type="text" id="name-input" placeholder="Seu nome" autocomplete="off">
-      <button class="btn-ocean" id="search-btn">Buscar</button>
+      <button class="btn-wine" id="search-btn">Buscar</button>
     </div>
     <ul class="match-list hidden" id="match-list"></ul>
     <div class="feedback warn hidden" id="not-found-msg">
@@ -317,7 +368,7 @@
     <h2>Olá, <span class="guest-name" id="guest-name-display"></span>!</h2>
     <p class="lead" id="confirm-question">Você confirma sua presença no nosso casamento?</p>
     <div class="confirm-buttons">
-      <button class="btn-ocean" id="btn-yes">Sim, estarei lá 💙</button>
+      <button class="btn-wine" id="btn-yes">Sim, estarei lá 💕</button>
       <button class="btn-outline" id="btn-no">Não poderei ir</button>
     </div>
     <div class="feedback success hidden" id="already-answered"></div>
@@ -341,8 +392,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ====== CONFIGURAÇÃO DO SUPABASE ======
-  // Troque os valores abaixo pelos dados do SEU projeto Supabase
-  // (Project Settings > API Keys, e Project Settings > Data API)
   const SUPABASE_URL = "https://cqizfvzgivmthepfnngd.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_WSPIsu75q3v19VJtp4CrUQ_TPpoJVzS";
   // ========================================
@@ -408,7 +457,6 @@
       return;
     }
 
-    // Sempre mostra a lista para o convidado selecionar, mesmo com um único resultado
     data.forEach(guest => {
       const li = document.createElement('li');
       li.textContent = guest.nome;
@@ -449,7 +497,7 @@
     }
 
     if (presenca) {
-      thanksTitle.textContent = 'Que alegria! 💙';
+      thanksTitle.textContent = 'Que alegria! 💕';
       thanksMsg.textContent = 'Sua presença foi confirmada. Mal podemos esperar para celebrar com você!';
     } else {
       thanksTitle.textContent = 'Sentiremos sua falta';
