@@ -10,23 +10,24 @@
 :root { --wine:#7A2E43; --sand:#F4E9DE; }
 * { box-sizing:border-box; }
 html,body { margin:0; min-height:100%; font-family:'Jost',sans-serif; }
-body { min-height:100vh; overflow:hidden; background:#171014; color:#fff; }
+body { min-height:100vh; overflow:hidden; background:#100c0e; color:#fff; }
 .photo-bg { position:fixed; inset:0; display:flex; gap:4px; overflow:hidden; z-index:0; }
-.photo-bg::after { content:""; position:absolute; inset:0; background:rgba(13,8,11,.72); backdrop-filter:brightness(.64) blur(1.5px); }
+.photo-bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,5,7,.58),rgba(8,5,7,.78)); backdrop-filter:brightness(.58) blur(1px); }
 .photo-col { flex:1; display:flex; flex-direction:column; gap:4px; animation:scrollDown 48s linear infinite; }
 .photo-col:nth-child(2){animation-duration:58s}.photo-col:nth-child(3){animation-duration:42s}.photo-col:nth-child(4){animation-duration:62s}.photo-col:nth-child(5){animation-duration:52s}
 .photo-col img { width:100%; height:34vh; min-height:220px; object-fit:cover; filter:sepia(18%) saturate(85%) brightness(.82); }
 @keyframes scrollDown { from{transform:translateY(-50%)} to{transform:translateY(0)} }
 main { position:relative; z-index:2; min-height:100vh; display:grid; place-items:center; padding:24px; text-align:center; }
-.content { width:min(940px,100%); padding:clamp(24px,5vw,54px); animation:reveal 1.1s ease both; background:rgba(255,255,255,.92); color:#3D2A2E; border:1px solid rgba(255,255,255,.96); border-radius:18px; box-shadow:0 18px 55px rgba(0,0,0,.28); backdrop-filter:blur(5px); }
+.content { width:min(1040px,100%); padding:clamp(30px,6vw,68px); animation:reveal 1.1s ease both; background:rgba(16,12,14,.72); color:#fffaf4; border:1px solid rgba(191,154,102,.42); border-radius:0; box-shadow:0 32px 90px rgba(0,0,0,.48); backdrop-filter:blur(10px); position:relative; }
+.content::before { content:""; position:absolute; inset:12px; border:1px solid rgba(255,250,244,.14); pointer-events:none; }
 @keyframes reveal { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
-.eyebrow { margin:0 0 12px; text-transform:uppercase; letter-spacing:.32em; font-size:clamp(11px,1.5vw,15px); }
-h1 { margin:0 0 30px; font-family:'Cormorant Garamond',serif; font-size:clamp(40px,7vw,76px); font-style:italic; font-weight:500; text-shadow:0 1px 0 rgba(255,255,255,.9); }
+.eyebrow { margin:0 0 15px; color:#bf9a66; text-transform:uppercase; letter-spacing:.34em; font-size:clamp(10px,1.3vw,13px); }
+h1 { margin:0 0 36px; font-family:'Cormorant Garamond',serif; font-size:clamp(48px,8vw,92px); line-height:.95; font-style:italic; font-weight:500; color:#fffaf4; text-shadow:0 14px 32px rgba(0,0,0,.55); }
 .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(7px,2vw,20px); }
-.unit { padding:clamp(16px,3vw,30px) 5px; border:1px solid rgba(122,46,67,.22); background:rgba(244,233,222,.56); box-shadow:0 8px 22px rgba(92,34,51,.08); }
-.number { display:block; font-size:clamp(36px,8vw,86px); font-weight:300; line-height:1; font-variant-numeric:tabular-nums; color:#7A2E43; text-shadow:none; }
-.label { display:block; margin-top:11px; text-transform:uppercase; letter-spacing:.18em; font-size:clamp(9px,1.2vw,13px); }
-.actions { margin-top:30px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+.unit { padding:clamp(19px,3.3vw,34px) 5px; border:1px solid rgba(191,154,102,.36); background:rgba(255,250,244,.045); box-shadow:inset 0 0 30px rgba(255,255,255,.018); }
+.number { display:block; font-family:'Cormorant Garamond',serif; font-size:clamp(42px,9vw,96px); font-weight:400; line-height:.9; font-variant-numeric:tabular-nums; color:#fffaf4; text-shadow:0 8px 22px rgba(0,0,0,.45); }
+.label { display:block; margin-top:14px; color:#bf9a66; text-transform:uppercase; letter-spacing:.22em; font-size:clamp(8px,1.05vw,11px); }
+.actions { display:none; }
 a { font:inherit; color:#7A2E43; border:1px solid rgba(122,46,67,.38); background:rgba(255,255,255,.72); border-radius:999px; padding:11px 19px; cursor:pointer; text-decoration:none; }
 a:hover { background:#fff; }
 .sound-note { margin:15px 0 0; font-size:12px; opacity:.72; }
@@ -46,13 +47,14 @@ a:hover { background:#fff; }
   <section class="content">
     <p class="eyebrow">Presença confirmada</p>
     <h1>O grande dia está chegando</h1>
+    <div style="width:min(420px,70%);height:1px;margin:0 auto 32px;background:linear-gradient(90deg,transparent,#bf9a66,transparent)"></div>
     <div class="grid" aria-live="polite">
       <div class="unit"><span class="number" id="days">000</span><span class="label">Dias</span></div>
       <div class="unit"><span class="number" id="hours">00</span><span class="label">Horas</span></div>
       <div class="unit"><span class="number" id="minutes">00</span><span class="label">Minutos</span></div>
       <div class="unit"><span class="number" id="seconds">00</span><span class="label">Segundos</span></div>
     </div>
-    <div class="actions"><a href="index.html">Voltar ao convite</a></div>
+    <p style="margin:30px 0 0;color:#cdb79b;font-size:11px;letter-spacing:.24em;text-transform:uppercase">Fernanda &amp; Hebert · 31.01.2027</p>
   </section>
 </main>
 <script>
