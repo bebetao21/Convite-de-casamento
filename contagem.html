@@ -76,11 +76,12 @@ function createOldClockAudio() {
   const dry = audioContext.createGain();
   const master = audioContext.createGain();
 
-  delay.delayTime.value = 0.18;
-  feedback.gain.value = 0.22;
-  wet.gain.value = 0.17;
-  dry.gain.value = 0.88;
-  master.gain.value = 0.72;
+  // Eco curto e escuro, sem efeito metálico exagerado.
+  delay.delayTime.value = 0.16;
+  feedback.gain.value = 0.16;
+  wet.gain.value = 0.12;
+  dry.gain.value = 0.90;
+  master.gain.value = 0.54;
 
   echoInput = audioContext.createGain();
   echoInput.connect(dry);
@@ -93,58 +94,64 @@ function createOldClockAudio() {
   master.connect(audioContext.destination);
 }
 
-function playOldClockTick() {
-  if (!audioContext || audioContext.state !== 'running') return;
-  const now = audioContext.currentTime;
-  tickSide = !tickSide;
-
-  // Ruído muito curto filtrado: produz um estalo mecânico, sem nota eletrônica.
-  const length = Math.floor(audioContext.sampleRate * 0.09);
+function makeNoiseBuffer(duration) {
+  const length = Math.floor(audioContext.sampleRate * duration);
   const buffer = audioContext.createBuffer(1, length, audioContext.sampleRate);
   const data = buffer.getChannelData(0);
+
   for (let i = 0; i < length; i++) {
-    const decay = Math.pow(1 - i / length, 7);
+    const progress = i / length;
+    const decay = Math.pow(1 - progress, 9);
     data[i] = (Math.random() * 2 - 1) * decay;
   }
 
-  const source = audioContext.createBufferSource();
-  const band = audioContext.createBiquadFilter();
-  const low = audioContext.createBiquadFilter();
-  const gain = audioContext.createGain();
-  source.buffer = buffer;
-  band.type = 'bandpass';
-  band.frequency.value = tickSide ? 1750 : 1250;
-  band.Q.value = 2.4;
-  low.type = 'lowpass';
-  low.frequency.value = 2600;
-  gain.gain.setValueAtTime(tickSide ? 0.34 : 0.28, now);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.085);
-  source.connect(band);
-  band.connect(low);
-  low.connect(gain);
-  gain.connect(echoInput);
-  source.start(now);
+  return buffer;
+}
 
-  // Pequena pancada seca da caixa de madeira do relógio.
-  const knockLength = Math.floor(audioContext.sampleRate * 0.055);
-  const knockBuffer = audioContext.createBuffer(1, knockLength, audioContext.sampleRate);
-  const knockData = knockBuffer.getChannelData(0);
-  for (let i = 0; i < knockLength; i++) {
-    const decay = Math.pow(1 - i / knockLength, 5);
-    knockData[i] = (Math.random() * 2 - 1) * decay;
-  }
-  const knock = audioContext.createBufferSource();
-  const knockFilter = audioContext.createBiquadFilter();
-  const knockGain = audioContext.createGain();
-  knock.buffer = knockBuffer;
-  knockFilter.type = 'lowpass';
-  knockFilter.frequency.value = tickSide ? 520 : 420;
-  knockGain.gain.setValueAtTime(0.16, now);
-  knockGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
-  knock.connect(knockFilter);
-  knockFilter.connect(knockGain);
-  knockGain.connect(echoInput);
-  knock.start(now);
+function playOldClockTick() {
+  if (!audioContext || audioContext.state !== 'running') return;
+
+  const now = audioContext.currentTime;
+  tickSide = !tickSide;
+
+  // Estalo seco do mecanismo. O som usa apenas ruído filtrado,
+  // sem osciladores ou notas de sintetizador.
+  const mechanism = audioContext.createBufferSource();
+  const mechanismBand = audioContext.createBiquadFilter();
+  const mechanismLow = audioContext.createBiquadFilter();
+  const mechanismGain = audioContext.createGain();
+
+  mechanism.buffer = makeNoiseBuffer(tickSide ? 0.065 : 0.075);
+  mechanismBand.type = 'bandpass';
+  mechanismBand.frequency.value = tickSide ? 1080 : 820;
+  mechanismBand.Q.value = 1.25;
+  mechanismLow.type = 'lowpass';
+  mechanismLow.frequency.value = 1700;
+  mechanismGain.gain.setValueAtTime(tickSide ? 0.30 : 0.25, now);
+  mechanismGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075);
+
+  mechanism.connect(mechanismBand);
+  mechanismBand.connect(mechanismLow);
+  mechanismLow.connect(mechanismGain);
+  mechanismGain.connect(echoInput);
+  mechanism.start(now);
+
+  // Pancada grave e abafada, como a caixa de madeira de um relógio antigo.
+  const woodenKnock = audioContext.createBufferSource();
+  const woodenLow = audioContext.createBiquadFilter();
+  const woodenGain = audioContext.createGain();
+
+  woodenKnock.buffer = makeNoiseBuffer(0.12);
+  woodenLow.type = 'lowpass';
+  woodenLow.frequency.value = tickSide ? 310 : 250;
+  woodenLow.Q.value = 0.65;
+  woodenGain.gain.setValueAtTime(tickSide ? 0.19 : 0.16, now);
+  woodenGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+  woodenKnock.connect(woodenLow);
+  woodenLow.connect(woodenGain);
+  woodenGain.connect(echoInput);
+  woodenKnock.start(now);
 }
 
 async function startClockSound() {
