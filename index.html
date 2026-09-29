@@ -23,25 +23,44 @@
   html, body {
     margin: 0;
     min-height: 100%;
-    background: var(--sand);
+    background: transparent;
     color: var(--ink);
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     line-height: 1.6;
   }
 
-  /* ===== Fundo animado de fotos em colunas, descendo tipo carrossel ===== */
+  body {
+    min-height: 100vh;
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* ===== Wallpaper animado ocupando a pagina inteira ===== */
   .photo-bg {
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: 0;
     display: flex;
     gap: 4px;
     overflow: hidden;
+    background: var(--sand);
+    pointer-events: none;
+  }
+
+  /* Camada clara para manter o texto legivel sobre as fotos. */
+  .photo-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: rgba(244, 233, 222, 0.28);
+    pointer-events: none;
   }
 
   .photo-col {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -53,9 +72,12 @@
 
   .photo-col img {
     width: 100%;
-    height: auto;
+    height: 34vh;
+    min-height: 220px;
+    flex: 0 0 auto;
     display: block;
-    filter: sepia(18%) saturate(85%) brightness(0.92);
+    object-fit: cover;
+    filter: sepia(18%) saturate(85%) brightness(0.82);
   }
 
   .photo-col.c1 { animation-duration: 46s; }
@@ -82,6 +104,21 @@
     margin: 0 auto;
     padding: 0 24px 100px;
     position: relative;
+    z-index: 3;
+  }
+
+  @media (max-width: 700px) {
+    .photo-col.c4,
+    .photo-col.c5 { display: none; }
+
+    .photo-col img {
+      height: 32vh;
+      min-height: 190px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-col { animation-play-state: paused; }
   }
 
   header.hero {
