@@ -23,7 +23,7 @@
   html, body {
     margin: 0;
     min-height: 100%;
-    background: transparent;
+    background: var(--sand);
     color: var(--ink);
     font-family: 'Jost', sans-serif;
     font-weight: 300;
@@ -34,7 +34,7 @@
   .photo-bg {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: -2;
     display: flex;
     gap: 4px;
     overflow: hidden;
@@ -53,9 +53,7 @@
 
   .photo-col img {
     width: 100%;
-    height: 34vh;
-    min-height: 220px;
-    object-fit: cover;
+    height: auto;
     display: block;
     filter: sepia(18%) saturate(85%) brightness(0.92);
   }
@@ -84,7 +82,6 @@
     margin: 0 auto;
     padding: 0 24px 100px;
     position: relative;
-    z-index: 3;
   }
 
   header.hero {
@@ -281,51 +278,6 @@
   }
 
   .hidden { display: none !important; }
-
-
-  /* Legibilidade sobre as fotos */
-  .hero .kicker, .hero h1, .hero .date-place,
-  .hero .date-place span, .hero .map-link, footer {
-    text-shadow: 0 1px 2px rgba(255,255,255,.98),
-                 0 0 7px rgba(255,255,255,.82),
-                 0 0 14px rgba(255,255,255,.42);
-  }
-
-  /* Emojis acompanham o quadro de confirmação */
-  #step-search { position: relative; overflow: visible; }
-  .beach-sticker {
-    position: absolute; z-index: 4; pointer-events: none; user-select: none;
-    line-height: 1; filter: drop-shadow(0 2px 2px rgba(255,255,255,.95)) drop-shadow(0 5px 8px rgba(61,42,46,.20));
-  }
-  .beach-sticker.palm-left { left: -40px; bottom: -24px; font-size: clamp(54px,7vw,82px); transform: rotate(-8deg); }
-  .beach-sticker.umbrella-right { right: -38px; top: -38px; font-size: clamp(50px,6vw,74px); transform: rotate(8deg); }
-
-  /* Contagem regressiva cinematográfica */
-  .countdown-overlay {
-    position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
-    padding: 24px; background: rgba(17, 12, 15, .76); backdrop-filter: brightness(.62) blur(2px);
-    opacity: 0; visibility: hidden; transition: opacity .55s ease, visibility .55s ease;
-  }
-  .countdown-overlay.active { opacity: 1; visibility: visible; }
-  .countdown-box { width: min(920px, 100%); text-align: center; color: #fff; }
-  .countdown-eyebrow { margin: 0 0 14px; letter-spacing: .34em; text-transform: uppercase; font-size: clamp(11px,1.4vw,15px); }
-  .countdown-title { margin: 0 0 26px; font-family: 'Cormorant Garamond',serif; font-size: clamp(34px,6vw,68px); font-style: italic; font-weight: 500; }
-  .countdown-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(8px,2vw,20px); }
-  .countdown-unit { padding: clamp(14px,3vw,28px) 6px; border: 1px solid rgba(255,255,255,.36); background: rgba(255,255,255,.055); box-shadow: 0 0 28px rgba(255,255,255,.06); }
-  .countdown-number { display: block; font-family: 'Jost',sans-serif; font-size: clamp(34px,8vw,82px); font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 0 18px rgba(255,255,255,.25); }
-  .countdown-label { display: block; margin-top: 10px; font-size: clamp(9px,1.2vw,13px); letter-spacing: .2em; text-transform: uppercase; }
-  .countdown-close { margin-top: 28px; padding: 10px 18px; color: #fff; border: 1px solid rgba(255,255,255,.5); background: transparent; border-radius: 999px; cursor: pointer; font-family: 'Jost',sans-serif; }
-  .countdown-close:hover { background: rgba(255,255,255,.12); }
-
-  @media (max-width:700px) {
-    .photo-col.c4,.photo-col.c5 { display:none; }
-    .beach-sticker.palm-left { left:-14px; bottom:-20px; font-size:54px; }
-    .beach-sticker.umbrella-right { right:-10px; top:-28px; font-size:50px; }
-    .countdown-grid { gap:6px; }
-    .countdown-unit { padding:16px 2px; }
-    .countdown-label { letter-spacing:.08em; }
-  }
-
 </style>
 </head>
 <body>
@@ -391,8 +343,6 @@
 
   <!-- ===== Etapa 1: buscar nome ===== -->
   <div class="card rsvp-card" id="step-search">
-    <span class="beach-sticker palm-left" aria-hidden="true">🌴</span>
-    <span class="beach-sticker umbrella-right" aria-hidden="true">⛱️</span>
     <h2>Confirme sua presença</h2>
     <p class="lead">Digite seu PRIMEIRO NOME e selecione abaixo.</p>
     <div class="search-row">
@@ -434,21 +384,6 @@
   <footer>Com amor, Fernanda &amp; Hebert</footer>
 </div>
 
-
-<div class="countdown-overlay" id="countdown-overlay" role="dialog" aria-modal="true" aria-labelledby="countdown-title">
-  <div class="countdown-box">
-    <p class="countdown-eyebrow">Presença confirmada</p>
-    <h2 class="countdown-title" id="countdown-title">O grande dia está chegando</h2>
-    <div class="countdown-grid" aria-live="polite">
-      <div class="countdown-unit"><span class="countdown-number" id="cd-days">000</span><span class="countdown-label">Dias</span></div>
-      <div class="countdown-unit"><span class="countdown-number" id="cd-hours">00</span><span class="countdown-label">Horas</span></div>
-      <div class="countdown-unit"><span class="countdown-number" id="cd-minutes">00</span><span class="countdown-label">Minutos</span></div>
-      <div class="countdown-unit"><span class="countdown-number" id="cd-seconds">00</span><span class="countdown-label">Segundos</span></div>
-    </div>
-    <button class="countdown-close" id="countdown-close" type="button">Continuar</button>
-  </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ====== CONFIGURAÇÃO DO SUPABASE ======
@@ -480,62 +415,6 @@
   const thanksChange = document.getElementById('thanks-change');
 
   let currentGuest = null;
-  const countdownOverlay = document.getElementById('countdown-overlay');
-  const countdownClose = document.getElementById('countdown-close');
-  const cdDays = document.getElementById('cd-days');
-  const cdHours = document.getElementById('cd-hours');
-  const cdMinutes = document.getElementById('cd-minutes');
-  const cdSeconds = document.getElementById('cd-seconds');
-  const weddingDate = new Date('2027-01-31T00:00:00-03:00');
-  let countdownTimer = null;
-  let audioContext = null;
-
-  function prepareTickAudio() {
-    try {
-      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-      if (audioContext.state === 'suspended') audioContext.resume();
-    } catch (e) { console.warn('Áudio não disponível neste navegador.', e); }
-  }
-
-  function playTick() {
-    if (!audioContext || audioContext.state !== 'running') return;
-    const now = audioContext.currentTime;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.type = 'triangle'; osc.frequency.setValueAtTime(1150, now); osc.frequency.exponentialRampToValueAtTime(520, now + .045);
-    gain.gain.setValueAtTime(.0001, now); gain.gain.exponentialRampToValueAtTime(.15, now + .004); gain.gain.exponentialRampToValueAtTime(.0001, now + .07);
-    osc.connect(gain); gain.connect(audioContext.destination); osc.start(now); osc.stop(now + .075);
-  }
-
-  function updateCountdown(withSound = false) {
-    const distance = Math.max(0, weddingDate.getTime() - Date.now());
-    const days = Math.floor(distance / 86400000);
-    const hours = Math.floor((distance % 86400000) / 3600000);
-    const minutes = Math.floor((distance % 3600000) / 60000);
-    const seconds = Math.floor((distance % 60000) / 1000);
-    cdDays.textContent = String(days).padStart(3, '0');
-    cdHours.textContent = String(hours).padStart(2, '0');
-    cdMinutes.textContent = String(minutes).padStart(2, '0');
-    cdSeconds.textContent = String(seconds).padStart(2, '0');
-    if (withSound && distance > 0) playTick();
-  }
-
-  function openCountdown() {
-    updateCountdown(false); playTick();
-    countdownOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    clearInterval(countdownTimer);
-    countdownTimer = setInterval(() => updateCountdown(true), 1000);
-  }
-
-  function closeCountdown() {
-    countdownOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    clearInterval(countdownTimer); countdownTimer = null;
-    showStep(stepThanks);
-  }
-
-  countdownClose.addEventListener('click', closeCountdown);
 
   function showStep(step) {
     [stepSearch, stepConfirm, stepThanks].forEach(s => s.classList.add('hidden'));
@@ -600,7 +479,6 @@
 
   async function responder(presenca) {
     if (!currentGuest) return;
-    if (presenca) prepareTickAudio();
 
     const { error } = await supabaseClient
       .from('convidados')
@@ -621,8 +499,7 @@
       thanksMsg.textContent = 'Obrigado por nos avisar! Ficará registrado que você não poderá comparecer.';
     }
 
-    if (presenca) openCountdown();
-    else showStep(stepThanks);
+    showStep(stepThanks);
   }
 
   searchBtn.addEventListener('click', searchGuest);
